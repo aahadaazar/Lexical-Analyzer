@@ -5,6 +5,10 @@ import java.io.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class LexicalAnalyzer {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
@@ -17,10 +21,13 @@ public class LexicalAnalyzer {
                 lineList.add(line);
             }
         }
-        for (int i = 0; i < lineList.size(); i++) {
+        for (int i = 0; i < 1; i++) {
             stringToCheck = lineList.get(i);
 
-            String splitArray[] = stringToCheck.split(" ");
+            String splitArray[] = stringToCheck.split(" |\\{|,");
+            
+            System.out.println(splitArray[0]);
+            
         }
     }
 
