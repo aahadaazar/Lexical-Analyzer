@@ -5,14 +5,11 @@ import java.io.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class LexicalAnalyzer {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        File file = new File("D:\\dummy code.txt");
+        File file = new File("D:\\dummy code2.txt");
+        ArrayList<String> splitArray = new ArrayList<>();
         ArrayList<String> lineList = new ArrayList<>();
         String stringToCheck;
 
@@ -23,12 +20,116 @@ public class LexicalAnalyzer {
         }
         for (int i = 0; i < 1; i++) {
             stringToCheck = lineList.get(i);
+            int start = 0;
+            for (int j = 0; j < stringToCheck.length(); j++) {
 
-            String splitArray[] = stringToCheck.split(" |\\{|,");
-            
-            System.out.println(splitArray[0]);
-            
+                if (stringToCheck.charAt(j) == ':' || stringToCheck.charAt(j) == ' ' || stringToCheck.charAt(j) == '{' || stringToCheck.charAt(j) == '}' || stringToCheck.charAt(j) == '[' || stringToCheck.charAt(j) == ']' || stringToCheck.charAt(j) == '(' || stringToCheck.charAt(j) == ')' || stringToCheck.charAt(j) == '.' || stringToCheck.charAt(j) == ';' || stringToCheck.charAt(j) == '+' || stringToCheck.charAt(j) == '-' || stringToCheck.charAt(j) == '*' || stringToCheck.charAt(j) == '/' || stringToCheck.charAt(j) == '=' || stringToCheck.charAt(j) == '%' || stringToCheck.charAt(j) == '!' || stringToCheck.charAt(j) == '&' || stringToCheck.charAt(j) == '|' || stringToCheck.charAt(j) == '<' || stringToCheck.charAt(j) == '>') {
+                    System.out.println(stringToCheck.substring(start, j));
+                    splitArray.add(stringToCheck.substring(start, j));
+
+                    start = j + 1;
+                    splitArray.add(stringToCheck.substring(j, start));
+
+                }
+            }
         }
-    }
 
+        while (splitArray.indexOf(" ") != -1 || splitArray.indexOf("") != -1) {
+            splitArray.remove(" ");
+            splitArray.remove("");
+        }
+        System.out.println(splitArray);
+        String[] NotFinalArray = new String[splitArray.size()];
+        NotFinalArray = splitArray.toArray(NotFinalArray);
+        ArrayList<String> finalSplitArray = new ArrayList<>();
+
+        for (int i = 0; i < NotFinalArray.length; i++) {
+            System.out.println(NotFinalArray[i]);
+
+            if (NotFinalArray[i].equals("+")) {
+                if (NotFinalArray[i + 1].equals("+") || NotFinalArray[i + 1].equals("=")) {
+                    String temp = NotFinalArray[i] + NotFinalArray[i + 1];
+                    finalSplitArray.add(temp);
+                    i = i + 1;
+                } else {
+                    finalSplitArray.add(NotFinalArray[i]);
+                }
+            } else if (NotFinalArray[i].equals("-")) {
+                if (NotFinalArray[i + 1].equals("-") || NotFinalArray[i + 1].equals("=")) {
+                    String temp = NotFinalArray[i] + NotFinalArray[i + 1];
+                    finalSplitArray.add(temp);
+                    i = i + 1;
+                } else {
+                    finalSplitArray.add(NotFinalArray[i]);
+                }
+            } else if (NotFinalArray[i].equals("*")) {
+                if (NotFinalArray[i + 1].equals("=")) {
+                    String temp = NotFinalArray[i] + NotFinalArray[i + 1];
+                    finalSplitArray.add(temp);
+                    i = i + 1;
+                } else {
+                    finalSplitArray.add(NotFinalArray[i]);
+                }
+            } else if (NotFinalArray[i].equals("/")) {
+                if (NotFinalArray[i + 1].equals("=")) {
+                    String temp = NotFinalArray[i] + NotFinalArray[i + 1];
+                    finalSplitArray.add(temp);
+                    i = i + 1;
+                } else {
+                    finalSplitArray.add(NotFinalArray[i]);
+                }
+            } else if (NotFinalArray[i].equals("%")) {
+                if (NotFinalArray[i + 1].equals("=")) {
+                    String temp = NotFinalArray[i] + NotFinalArray[i + 1];
+                    finalSplitArray.add(temp);
+                    i = i + 1;
+                } else {
+                    finalSplitArray.add(NotFinalArray[i]);
+                }
+            } else if (NotFinalArray[i].equals("!")) {
+                if (NotFinalArray[i + 1].equals("=")) {
+                    String temp = NotFinalArray[i] + NotFinalArray[i + 1];
+                    finalSplitArray.add(temp);
+                    i = i + 1;
+                } else {
+                    finalSplitArray.add(NotFinalArray[i]);
+                }
+            } else if (NotFinalArray[i].equals("&")) {
+                if (NotFinalArray[i + 1].equals("&")) {
+                    String temp = NotFinalArray[i] + NotFinalArray[i + 1];
+                    finalSplitArray.add(temp);
+                    i = i + 1;
+                } else {
+                    finalSplitArray.add(NotFinalArray[i]);
+                }
+            } else if (NotFinalArray[i].equals("|")) {
+                if (NotFinalArray[i + 1].equals("|")) {
+                    String temp = NotFinalArray[i] + NotFinalArray[i + 1];
+                    finalSplitArray.add(temp);
+                    i = i + 1;
+                } else {
+                    finalSplitArray.add(NotFinalArray[i]);
+                }
+            } else if (NotFinalArray[i].equals(">")) {
+                if (NotFinalArray[i + 1].equals(">") || NotFinalArray[i + 1].equals("=")) {
+                    String temp = NotFinalArray[i] + NotFinalArray[i + 1];
+                    finalSplitArray.add(temp);
+                    i = i + 1;
+                } else {
+                    finalSplitArray.add(NotFinalArray[i]);
+                }
+            } else if (NotFinalArray[i].equals("<")) {
+                if (NotFinalArray[i + 1].equals("<") || NotFinalArray[i + 1].equals("=")) {
+                    String temp = NotFinalArray[i] + NotFinalArray[i + 1];
+                    finalSplitArray.add(temp);
+                    i = i + 1;
+                } else {
+                    finalSplitArray.add(NotFinalArray[i]);
+                }
+            } else {
+                finalSplitArray.add(NotFinalArray[i]);
+            }
+        }
+        System.out.println(finalSplitArray);
+    }
 }
