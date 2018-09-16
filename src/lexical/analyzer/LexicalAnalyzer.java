@@ -130,6 +130,8 @@ public class LexicalAnalyzer {
                 finalSplitArray.add(NotFinalArray[i]);
             }
         }
+        DFA dfa = new DFA();
+        System.out.println(dfa.keyWords(finalSplitArray.get(0)));
         System.out.println(finalSplitArray);
     }
 }
