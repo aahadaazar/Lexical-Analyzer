@@ -163,7 +163,10 @@ public class DFA {
         {"NOT", "!"}, {"ROP", "!="},
         {"=", "="}, {"ROP", "=="},
         {"&", "&"}, {"AND", "&&"},
-        {"|", "|"}, {"OR", "||"},};
+        {"|", "|"}, {"OR", "||"},
+        {"AOP", "+="}, {"AOP", "-="},
+        {"AOP", "/="}, {"AOP", "*="},
+        {"AOP", "%"}};
 
         for (i = 0; i < list.length; i++) {
 
@@ -171,7 +174,7 @@ public class DFA {
                 return list[i][0];
             }
         }
-        return "STRING NULL";
+        return "Invalid";
 
     }
 }
