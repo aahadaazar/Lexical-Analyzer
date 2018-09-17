@@ -52,7 +52,7 @@ public token(String cp, String vp, int line){
     
 @Override
     public String toString(){
-        return "(CP:"+this.CP+" "+"VP:"+this.VP+" "+"Line:"+this.lineNum+")";
+        return "( "+this.CP+" ,"+this.VP+" ,"+this.lineNum+" )";
     }
     
 

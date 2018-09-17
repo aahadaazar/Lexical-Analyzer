@@ -15,49 +15,107 @@ public class LexicalAnalyzer {
         Splitter sp = new Splitter();
         DFA dfa = new DFA();
         SplitArray = sp.wordBreaker();
+        int[] lineBreak = sp.getLineBreak();
+        
+        for (int jk = 0; jk <lineBreak.length;jk++){
+            System.out.println("hello " + lineBreak[jk]);
+        }
+        
         System.out.println(SplitArray);
 
         token tokenSet[] = new token[SplitArray.size()];
         String temp = "";
         int i = 0;
+        int lineNo = 1;
+        int lineNoArray = 0;
         while (i < SplitArray.size()) {
-            
-            if(SplitArray.get(i).matches("[a-zA-Z]+")){
-            if (dfa.validateID(SplitArray.get(i))) {
-                String classPart = dfa.keyWords(SplitArray.get(i));
-                if (classPart == "Invalid") {
-                    tokenSet[i] = new token();
-                    tokenSet[i].CP = "ID";
-                    tokenSet[i].VP = SplitArray.get(i);
-                    tokenSet[i].lineNum = i + 1;
-                    i++;
+
+            if (SplitArray.get(i).matches("[_a-zA-Z|a-zA-Z]+")) {
+                if (dfa.validateID(SplitArray.get(i))) {
+                    String classPart = dfa.keyWords(SplitArray.get(i));
+                    if (classPart == "INvalid") {
+                        tokenSet[i] = new token();
+                        tokenSet[i].CP = "ID";
+                        tokenSet[i].VP = SplitArray.get(i);
+
+                        tokenSet[i].lineNum = lineNo;
+                        i++;
+
+                        if (i == lineBreak[lineNoArray]) {
+                            lineNo = lineNo + 1;
+                            lineNoArray = lineNoArray + 1;
+                        }
+
+                    } else {
+                        tokenSet[i] = new token();
+                        tokenSet[i].CP = classPart;
+                        tokenSet[i].VP = SplitArray.get(i);
+                        tokenSet[i].lineNum = lineNo;
+                        i++;
+
+                        if (i == lineBreak[lineNoArray]) {
+                            lineNo = lineNo + 1;
+                            lineNoArray = lineNoArray + 1;
+                        }
+                    }
                 } else {
                     tokenSet[i] = new token();
-                    tokenSet[i].CP = classPart;
+                    tokenSet[i].CP = "invalid";
                     tokenSet[i].VP = SplitArray.get(i);
-                    tokenSet[i].lineNum = i + 1;
-                    i++;
+                    tokenSet[i].lineNum = lineNo;
+                        i++;
+
+                        if (i == lineBreak[lineNoArray]) {
+                            lineNo = lineNo + 1;
+                            lineNoArray = lineNoArray + 1;
+                        }
+                    
                 }
-            } else {
+            } else if (SplitArray.get(i).matches("[0-9]+")) {
                 tokenSet[i] = new token();
-                tokenSet[i].CP = "invalid";
+                tokenSet[i].CP = "INTEGER";
                 tokenSet[i].VP = SplitArray.get(i);
-                tokenSet[i].lineNum = i + 1;
-                i++;
-            }
-            }
-            else if(SplitArray.get(i).matches("[0-9]+")) {
+               tokenSet[i].lineNum = lineNo;
+                        i++;
+
+                        if (i == lineBreak[lineNoArray]) {
+                            lineNo = lineNo + 1;
+                            lineNoArray = lineNoArray + 1;
+                        }
+
+            } 
+            else if (SplitArray.get(i).matches("[-|+|*|/|=]+"))
+            {
                 tokenSet[i] = new token();
-                    tokenSet[i].CP = "INTEGER";
-                    tokenSet[i].VP = SplitArray.get(i);
-                    tokenSet[i].lineNum = i + 1;
-                    i++;
-              
-            }else{
-                tokenSet[i]=new token();
+                tokenSet[i].CP = dfa.keyWords(SplitArray.get(i));
+                tokenSet[i].VP = SplitArray.get(i);
+               tokenSet[i].lineNum = lineNo;
+                        i++;
+
+                        if (i == lineBreak[lineNoArray]) {
+                            lineNo = lineNo + 1;
+                            lineNoArray = lineNoArray + 1;
+                        }
+            }
+            else if (SplitArray.get(i).matches("(|)|.|,|;|:|[|]|\\{|\\}"))
+            {
+                tokenSet[i] = new token();
+                tokenSet[i].CP = dfa.keyWords(SplitArray.get(i));
+                tokenSet[i].VP = SplitArray.get(i);
+               tokenSet[i].lineNum = lineNo;
+                        i++;
+
+                        if (i == lineBreak[lineNoArray]) {
+                            lineNo = lineNo + 1;
+                            lineNoArray = lineNoArray + 1;
+                        }
+            }
+            
+            else {
+                tokenSet[i] = new token();
                 i++;
             }
-                
+
         }
 
         for (int j = 0; j < tokenSet.length; j++) {

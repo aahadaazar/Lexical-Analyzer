@@ -18,47 +18,66 @@ import java.util.ArrayList;
  */
 public class Splitter {
 
+    int lineBreak[];
+
     public Splitter() {
 
     }
 
     public ArrayList wordBreaker() throws FileNotFoundException, IOException {
-        File file = new File("D:\\dummy code2.txt");
+        File file = new File("C:\\dummy code2.txt");
         ArrayList<String> splitArray = new ArrayList<>();
         ArrayList<String> lineList = new ArrayList<>();
-        String stringToCheck;
+        String stringToCheck = "";
+        int i, j = 0, start = 0;
+
+        int lineBreakCheck = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             for (String line; (line = br.readLine()) != null;) {
-                lineList.add(line);
+                if (line.equals("")) {
+                    System.out.println("empty line found!");
+                } else {
+                    lineList.add(line);
+                }
+
             }
         }
-        for (int i = 0; i < lineList.size(); i++) {
+        lineBreak = new int[lineList.size()];
+        for (i = 0; i < lineList.size(); i++) {
             stringToCheck = lineList.get(i);
-            int start = 0;
-            for (int j = 0; j < stringToCheck.length(); j++) {
+            start = 0;
+            for (j = 0; j < stringToCheck.length(); j++) {
 
                 if (stringToCheck.charAt(j) == ':' || stringToCheck.charAt(j) == ' ' || stringToCheck.charAt(j) == '{' || stringToCheck.charAt(j) == '}' || stringToCheck.charAt(j) == '[' || stringToCheck.charAt(j) == ']' || stringToCheck.charAt(j) == '(' || stringToCheck.charAt(j) == ')' || stringToCheck.charAt(j) == '.' || stringToCheck.charAt(j) == ';' || stringToCheck.charAt(j) == '+' || stringToCheck.charAt(j) == '-' || stringToCheck.charAt(j) == '*' || stringToCheck.charAt(j) == '/' || stringToCheck.charAt(j) == '=' || stringToCheck.charAt(j) == '%' || stringToCheck.charAt(j) == '!' || stringToCheck.charAt(j) == '&' || stringToCheck.charAt(j) == '|' || stringToCheck.charAt(j) == '<' || stringToCheck.charAt(j) == '>') {
 //                    System.out.println(stringToCheck.substring(start, j));
                     splitArray.add(stringToCheck.substring(start, j));
-
                     start = j + 1;
                     splitArray.add(stringToCheck.substring(j, start));
 
                 }
+
             }
+
+            if (j == stringToCheck.length()) {
+                splitArray.add(stringToCheck.substring(start, j));
+            }
+
+            while (splitArray.indexOf(" ") != -1 || splitArray.indexOf("") != -1) {
+                splitArray.remove(" ");
+                splitArray.remove("");
+            }
+            System.out.println(splitArray);
+            lineBreak[i] = splitArray.size();
+            System.out.println(lineBreak[i]);
         }
 
-        while (splitArray.indexOf(" ") != -1 || splitArray.indexOf("") != -1) {
-            splitArray.remove(" ");
-            splitArray.remove("");
-        }
 //        System.out.println(splitArray);
         String[] NotFinalArray = new String[splitArray.size()];
         NotFinalArray = splitArray.toArray(NotFinalArray);
         ArrayList<String> finalSplitArray = new ArrayList<>();
 
-        for (int i = 0; i < NotFinalArray.length; i++) {
+        for (i = 0; i < NotFinalArray.length; i++) {
 //            System.out.println(NotFinalArray[i]);
 
             if (NotFinalArray[i].equals("+")) {
@@ -147,6 +166,10 @@ public class Splitter {
         }
         return finalSplitArray;
 
+    }
+
+    public int[] getLineBreak() {
+        return lineBreak;
     }
 
 }

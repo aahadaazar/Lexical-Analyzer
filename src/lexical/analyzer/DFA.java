@@ -138,7 +138,7 @@ public class DFA {
         {"DT", "char"},
         {"DT", "charArray"},
         {"blackhole", "blackhole"},
-        {"forItema", "forItems"},
+        {"forItems", "forItems"},
         {"aslongas", "aslongas"}, {"if", "if"},
         {"else", "else"}, {"switch", "switch"},
         {"continue", "continue"}, {"break", "break"},
@@ -149,8 +149,8 @@ public class DFA {
         {"AM", "interface"}, {"AM", "implements"},
         {"AM", "extends"}, {"new", "new"},
         {"AM", "super"}, {"this", "this"},
-        {";", ";"},
-        {":", ":"}, {"{", " ("},
+        {";", ";"}, {".","."},
+        {":", ":"}, {"(", "("},
         {")", ")"}, {"{", "{"},
         {"}", "}"}, {"[", "["},
         {"]", "]"}, {",", ","},
@@ -174,7 +174,7 @@ public class DFA {
                 return list[i][0];
             }
         }
-        return "Invalid";
+        return "INvalid";
 
     }
 }
