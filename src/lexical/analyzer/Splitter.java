@@ -60,24 +60,36 @@ public class Splitter {
                     splitArray.add(stringToCheck.substring(j, start));
 
                 } else if (stringToCheck.charAt(j) == '"') {
-                    int t = j + 1;
+
+                    int x = j;
+                    int t = j;
+                    x--;
+                    if(start!=0)
+                    if (Character.isAlphabetic(stringToCheck.charAt(x))
+                            || Character.isDigit(stringToCheck.charAt(x)) || stringToCheck.charAt(x) == '\\') {
+                        x++;
+                        splitArray.add(stringToCheck.substring(start, x));
+                    }
+                    t++;
                     tempS += "\"";
-                    while (stringToCheck.charAt(t) != '"') {
-                        if (Character.isSpaceChar(stringToCheck.charAt(t))) {
-                            splitArray.add(stringToCheck.substring(start, t));
-                            start = t + 1;
-                            j = t;
-                            flag = true;
-                            break;
-                        }
-                        if (stringToCheck.charAt(t) == '\\') {
-                            tempS += Character.toString(stringToCheck.charAt(t));
-                            t++;
-                            tempS += Character.toString(stringToCheck.charAt(t));
-                            t++;
-                        } else {
-                            tempS += Character.toString(stringToCheck.charAt(t));
-                            t++;
+                    if (!flag) {
+                        while (stringToCheck.charAt(t) != '"') {
+                            if (Character.isSpaceChar(stringToCheck.charAt(t))) {
+                                splitArray.add(stringToCheck.substring(start, t));
+                                start = t + 1;
+                                j = t;
+                                flag = true;
+                                break;
+                            }
+                            if (stringToCheck.charAt(t) == '\\') {
+                                tempS += Character.toString(stringToCheck.charAt(t));
+                                t++;
+                                tempS += Character.toString(stringToCheck.charAt(t));
+                                t++;
+                            } else {
+                                tempS += Character.toString(stringToCheck.charAt(t));
+                                t++;
+                            }
                         }
                     }
                     if (!flag) {
@@ -85,6 +97,7 @@ public class Splitter {
                         splitArray.add(tempS);
                         start = t + 1;
                         j = t;
+                        tempS = "";
                     }
                 }
 

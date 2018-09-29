@@ -120,7 +120,7 @@ public class LexicalAnalyzer {
                     tokenSet[i].CP = "Invalid";
                     tokenSet[i].VP = SplitArray.get(i);
                     tokenSet[i].lineNum = lineNo;
-                    
+                    i++;
                 }
                 if (i == lineBreak[lineNoArray]) {
                     lineNo = lineNo + 1;
