@@ -137,9 +137,11 @@ public class DFA {
         {"DT", "dNum"},
         {"DT", "char"},
         {"DT", "charArray"},
-        {"blackhole", "blackhole"},
+        {"String","String"},
+        {"blackhole", "blackhole"}, //void
         {"forItems", "forItems"},
-        {"aslongas", "aslongas"}, {"if", "if"},
+        {"aslongas", "aslongas"}, //while
+        {"if", "if"},
         {"else", "else"}, {"switch", "switch"},
         {"continue", "continue"}, {"break", "break"},
         {"return", "return"}, {"AM", "public"},
@@ -174,7 +176,19 @@ public class DFA {
                 return list[i][0];
             }
         }
-        return "INvalid";
+        return "Invalid";
 
+    }
+    
+    public String remove(String temp){
+        String str="";
+        for (int i = 0; i < temp.length()-1; i++) {
+            str+=Character.toString(temp.charAt(i));
+        }
+        
+        str=str.replaceFirst(Character.toString(str.charAt(0)),"");
+      
+        
+        return str;
     }
 }

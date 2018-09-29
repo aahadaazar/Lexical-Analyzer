@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.lang.Character;
 
 /**
  *
@@ -25,11 +26,14 @@ public class Splitter {
     }
 
     public ArrayList wordBreaker() throws FileNotFoundException, IOException {
-        File file = new File("C:\\dummy code2.txt");
+        File file = new File("F:\\dummy code2.txt");
+//         ArrayList<String> forString = new ArrayList<>();
+        String tempS = "";
         ArrayList<String> splitArray = new ArrayList<>();
         ArrayList<String> lineList = new ArrayList<>();
         String stringToCheck = "";
         int i, j = 0, start = 0;
+        boolean flag = false;
 
         int lineBreakCheck = 0;
 
@@ -55,6 +59,33 @@ public class Splitter {
                     start = j + 1;
                     splitArray.add(stringToCheck.substring(j, start));
 
+                } else if (stringToCheck.charAt(j) == '"') {
+                    int t = j + 1;
+                    tempS += "\"";
+                    while (stringToCheck.charAt(t) != '"') {
+                        if (Character.isSpaceChar(stringToCheck.charAt(t))) {
+                            splitArray.add(stringToCheck.substring(start, t));
+                            start = t + 1;
+                            j = t;
+                            flag = true;
+                            break;
+                        }
+                        if (stringToCheck.charAt(t) == '\\') {
+                            tempS += Character.toString(stringToCheck.charAt(t));
+                            t++;
+                            tempS += Character.toString(stringToCheck.charAt(t));
+                            t++;
+                        } else {
+                            tempS += Character.toString(stringToCheck.charAt(t));
+                            t++;
+                        }
+                    }
+                    if (!flag) {
+                        tempS += "\"";
+                        splitArray.add(tempS);
+                        start = t + 1;
+                        j = t;
+                    }
                 }
 
             }
@@ -69,7 +100,7 @@ public class Splitter {
             }
             System.out.println(splitArray);
             lineBreak[i] = splitArray.size();
-            System.out.println(lineBreak[i]);
+//            System.out.println(lineBreak[i]);
         }
 
 //        System.out.println(splitArray);

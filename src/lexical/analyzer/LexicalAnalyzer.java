@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.lang.Character;
 
 public class LexicalAnalyzer {
 
@@ -13,15 +14,15 @@ public class LexicalAnalyzer {
 
         ArrayList<String> SplitArray = new ArrayList<>();
         Splitter sp = new Splitter();
+        String classPart = "";
         DFA dfa = new DFA();
         SplitArray = sp.wordBreaker();
         int[] lineBreak = sp.getLineBreak();
+//        System.out.println(SplitArray);
 
         for (int jk = 0; jk < lineBreak.length; jk++) {
-            System.out.println("hello " + lineBreak[jk]);
+//            System.out.println("hello " + lineBreak[jk]);
         }
-
-        System.out.println(SplitArray);
 
         token tokenSet[] = new token[SplitArray.size()];
         String temp = "";
@@ -32,8 +33,8 @@ public class LexicalAnalyzer {
 
             if (SplitArray.get(i).matches("[_a-zA-Z|a-zA-Z]+")) {
                 if (dfa.validateID(SplitArray.get(i))) {
-                    String classPart = dfa.keyWords(SplitArray.get(i));
-                    if (classPart == "INvalid") {
+                    classPart = dfa.keyWords(SplitArray.get(i));
+                    if (classPart == "Invalid") {
                         tokenSet[i] = new token();
                         tokenSet[i].CP = "ID";
                         tokenSet[i].VP = SplitArray.get(i);
@@ -105,13 +106,44 @@ public class LexicalAnalyzer {
                     lineNo = lineNo + 1;
                     lineNoArray = lineNoArray + 1;
                 }
-            } else {
-                tokenSet[i] = new token();
-                i++;
+            } else if (SplitArray.get(i).matches("\\\".*?\\\"")) {
+                if (dfa.validateString(SplitArray.get(i))) {
+                    String temp1 = SplitArray.get(i);
+                    temp1=dfa.remove(temp1);
+                    tokenSet[i] = new token();
+                    tokenSet[i].CP = "String";
+                    tokenSet[i].VP = temp1;
+                    tokenSet[i].lineNum = lineNo;
+                    i++;
+                }else{
+                    tokenSet[i] = new token();
+                    tokenSet[i].CP = "Invalid";
+                    tokenSet[i].VP = SplitArray.get(i);
+                    tokenSet[i].lineNum = lineNo;
+                    
+                }
+                if (i == lineBreak[lineNoArray]) {
+                    lineNo = lineNo + 1;
+                    lineNoArray = lineNoArray + 1;
+                }
+
             }
+            else {
+                tokenSet[i] = new token();
+                tokenSet[i].CP="invalid";
+                tokenSet[i].VP=SplitArray.get(i);
+                tokenSet[i].lineNum = lineNo;
+                i++;
+                if (i == lineBreak[lineNoArray]) {
+                    lineNo = lineNo + 1;
+                    lineNoArray = lineNoArray + 1;
+                }
+            }
+            
+            
 
         }
-        File newFile = new File("C:\\Users\\Abdul\\Documents", "token list.txt");
+        File newFile = new File("C:\\Users\\Khurram\\Documents", "token list.txt");
         newFile.createNewFile();
         for (int j = 0; j < tokenSet.length; j++) {
 
@@ -119,7 +151,7 @@ public class LexicalAnalyzer {
                     BufferedWriter bw = new BufferedWriter(fw);
                     PrintWriter out = new PrintWriter(bw)) {
                 out.println(tokenSet[j].toString());
-             
+
             } catch (IOException e) {
             }
             newFile.setReadOnly();
